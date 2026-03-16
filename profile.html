@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>UkrSZozula — Адмін</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Панель керування</h1>
+        <p>Тут можна видалити будь-який пост у мережі.</p>
+        <div id="adminFeed"></div>
+    </div>
+
+    <script>
+        function renderAdmin() {
+            const feed = document.getElementById('adminFeed');
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            feed.innerHTML = posts.map(p => `
+                <div class="card" style="border: 1px solid red;">
+                    <b>Автор: ${p.author}</b>
+                    <p>${p.content}</p>
+                    <button onclick="adminDelete(${p.id})" style="background:red;">ВИДАЛИТИ ПОСТ</button>
+                </div>
+            `).join('');
+        }
+
+        function adminDelete(id) {
+            let posts = JSON.parse(localStorage.getItem('posts'));
+            posts = posts.filter(p => p.id !== id);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            renderAdmin();
+        }
+
+        renderAdmin();
+    </script>
+</body>
+</html>
